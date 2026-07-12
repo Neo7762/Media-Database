@@ -73,14 +73,15 @@ namespace Media_Database.Models
         {
             get
             {
-                if (Episodes != null && Episodes.Count > 0)
-                {
-                    return (int?)Episodes.Average(e => e.Rating);
-                }
-                else
-                {
+                var rated = Episodes?
+                    .Where(e => e.Rating.HasValue)
+                    .Select(e => e.Rating!.Value)
+                    .ToList();
+
+                if (rated == null || rated.Count == 0)
                     return null;
-                }
+
+                return (int)Math.Round(rated.Average(), MidpointRounding.AwayFromZero);
             }
         }
         [NotMapped]
@@ -88,14 +89,15 @@ namespace Media_Database.Models
         {
             get
             {
-                if (Episodes != null && Episodes.Count > 0)
-                {
-                    return (int?)Episodes.Average(e => e.Rewatchability);
-                }
-                else
-                {
+                var rated = Episodes?
+                    .Where(e => e.Rewatchability.HasValue)
+                    .Select(e => e.Rewatchability!.Value)
+                    .ToList();
+
+                if (rated == null || rated.Count == 0)
                     return null;
-                }
+
+                return (int)Math.Round(rated.Average(), MidpointRounding.AwayFromZero);
             }
         }
 

@@ -41,7 +41,7 @@ namespace Media_Database.Models
 
         //Add all genres from all Season in the Show
         [NotMapped]
-        public ICollection<Genre>? Genres
+        public ICollection<Genre> Genres
         {
             get
             {

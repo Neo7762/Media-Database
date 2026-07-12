@@ -11,7 +11,7 @@
         public string? CountryOfOrigin { get; set; }
 
         //Connection to Genre
-        public ICollection<Genre>? Genres { get; set; }
+        public ICollection<Genre> Genres { get; set; }
 
         //Rating System
         public int? Rating { get; set; }

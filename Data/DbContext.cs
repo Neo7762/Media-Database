@@ -1,4 +1,5 @@
-﻿using Media_Database.Models;
+﻿using System.IO;
+using Media_Database.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Media_Database.Data
@@ -7,15 +8,15 @@ namespace Media_Database.Data
     {
         public MediaContext(DbContextOptions<MediaContext> options) : base(options) { }
 
-        public DbSet<MovieViewModel> Movies { get; set; }
-        public DbSet<GenreViewModel> Genres { get; set; }
-        public DbSet<DirectorViewModel> Directors { get; set; }
-        public DbSet<WriterViewModel> Writers { get; set; }
-        public DbSet<ActorViewModel> Actors { get; set; }
-        public DbSet<CollectionViewModel> Collections { get; set; }
-        public DbSet<EpisodeViewModel> Episodes { get; set; }
-        public DbSet<SeasonViewModel> Seasons { get; set; }
-        public DbSet<ShowViewModel> Shows { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Genre> Genres { get; set; }
+        public DbSet<Director> Directors { get; set; }
+        public DbSet<Writer> Writers { get; set; }
+        public DbSet<Actor> Actors { get; set; }
+        public DbSet<Collection> Collections { get; set; }
+        public DbSet<Episode> Episodes { get; set; }
+        public DbSet<Season> Seasons { get; set; }
+        public DbSet<Show> Shows { get; set; }
 
     }
 }

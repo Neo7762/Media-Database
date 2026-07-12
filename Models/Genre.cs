@@ -1,6 +1,6 @@
 ﻿namespace Media_Database.Models
 {
-    public class GenreViewModel
+    public class Genre
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
@@ -8,9 +8,9 @@
 
         //Connection to Movie and Episode
         public Guid? MovieId { get; set; }
-        public MovieViewModel? Movie { get; set; }
+        public Movie? Movie { get; set; }
 
         public Guid? EpisodeId { get; set; }
-        public EpisodeViewModel? Episode { get; set; }
+        public Episode? Episode { get; set; }
     }
 }

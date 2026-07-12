@@ -2,111 +2,81 @@
 
 namespace Media_Database.Models
 {
-    public class SeasonViewModel
+    public class Season
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
         public string? ImagePath { get; set; }
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
         public string? Synopsis { get; set; }
         public DateOnly? ReleaseYear { get; set; }
 
-        //Count length of series from length of each Episode in the season
-        [NotMapped]
-        public int LengthMinutes
-        {
-            get
-            {
-                if (Episodes != null && Episodes.Count > 0)
-                {
-                    int totalMinutes = Episodes.Sum(e => e.LengthMinutes);
-                    return (totalMinutes);
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-        }
+        // Required parent: Season -> Show
+        public Guid ShowId { get; set; }
+        public Show Show { get; set; } = null!;
 
-        //Add all genres from all Episodes in the Season
-        [NotMapped]
-        public ICollection<GenreViewModel> Genres
-        {
-            get
-            {
-                if (Episodes != null && Episodes.Count > 0)
-                {
-                    var genres = Episodes.SelectMany(e => e.Genres).Distinct().ToList();
-                    return genres;
-                }
-                else
-                {
-                    return new List<GenreViewModel>();
-                }
-            }
-        }
+        // Children
+        public ICollection<Episode> Episodes { get; set; } = new List<Episode>();
 
-        //Calculate start and end dates of the watch time of the Season based on the date watched of the first and last Episode
+        // Derived fields
         [NotMapped]
-        public DateOnly StartWatch
-        {
-            get
-            {
-                if (Episodes != null && Episodes.Count > 0) { return Episodes.Min(e => e.WatchDate) ?? default; }
-                else { return default; }
-            }
-        }
-        [NotMapped]
-        public DateOnly EndWatch
-        {
-            get
-            {
-                if (Episodes != null && Episodes.Count > 0) { return Episodes.Max(e => e.WatchDate) ?? default; }
-                else { return default; }
-            }
-        }
+        public int LengthMinutes => Episodes.Sum(e => e.LengthMinutes);
 
-        //Calculate rating and rewatchability of the Season based on the average of all Episodes
+        [NotMapped]
+        public ICollection<Genre> Genres =>
+            Episodes.SelectMany(e => e.Genres).Distinct().ToList();
+
+        [NotMapped]
+        public DateOnly? StartWatch =>
+            Episodes.Where(e => e.WatchDate.HasValue)
+                    .Select(e => e.WatchDate)
+                    .Min();
+
+        [NotMapped]
+        public DateOnly? EndWatch =>
+            Episodes.Where(e => e.WatchDate.HasValue)
+                    .Select(e => e.WatchDate)
+                    .Max();
+
         [NotMapped]
         public int? Rating
         {
             get
             {
-                var rated = Episodes?
-                    .Where(e => e.Rating.HasValue)
-                    .Select(e => e.Rating!.Value)
-                    .ToList();
-
-                if (rated == null || rated.Count == 0)
-                    return null;
-
-                return (int)Math.Round(rated.Average(), MidpointRounding.AwayFromZero);
+                var vals = Episodes.Where(e => e.Rating.HasValue)
+                                   .Select(e => e.Rating!.Value)
+                                   .ToList();
+                return vals.Count == 0
+                    ? null
+                    : (int)Math.Round(vals.Average(), MidpointRounding.AwayFromZero);
             }
         }
+
         [NotMapped]
         public int? Rewatchability
         {
             get
             {
-                var rated = Episodes?
-                    .Where(e => e.Rewatchability.HasValue)
-                    .Select(e => e.Rewatchability!.Value)
-                    .ToList();
-
-                if (rated == null || rated.Count == 0)
-                    return null;
-
-                return (int)Math.Round(rated.Average(), MidpointRounding.AwayFromZero);
+                var vals = Episodes.Where(e => e.Rewatchability.HasValue)
+                                   .Select(e => e.Rewatchability!.Value)
+                                   .ToList();
+                return vals.Count == 0
+                    ? null
+                    : (int)Math.Round(vals.Average(), MidpointRounding.AwayFromZero);
             }
         }
 
-        //Connection to Episode
-        public ICollection<EpisodeViewModel> Episodes { get; set; }
+        // DERIVED people from episodes (read-only aggregate)
+        [NotMapped]
+        public ICollection<Actor> Actors =>
+            Episodes.SelectMany(e => e.Actors).Distinct().ToList();
 
-        //Connection to Actor, Director and Writer
-        public ICollection<ActorViewModel> Actors { get; set; }
-        public ICollection<DirectorViewModel> Directors { get; set; }
-        public ICollection<WriterViewModel> Writers { get; set; }
+        [NotMapped]
+        public ICollection<Director> Directors =>
+            Episodes.SelectMany(e => e.Directors).Distinct().ToList();
+
+        [NotMapped]
+        public ICollection<Writer> Writers =>
+            Episodes.SelectMany(e => e.Writers).Distinct().ToList();
     }
 }

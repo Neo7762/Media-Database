@@ -1,39 +1,37 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using System.IO;
 
 namespace Media_Database.Models
 {
-    public class EpisodeViewModel
+    public class Episode
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
         public string? ImagePath { get; set; }
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
         public string? Synopsis { get; set; }
         public int EpisodeNumber { get; set; }
         public DateOnly? ReleaseDate { get; set; }
         public int LengthMinutes { get; set; }
 
-        //Connection to Genre
-        public ICollection<GenreViewModel> Genres { get; set; } = new List<GenreViewModel>();
-
-        //Rating System
+        // Rating system (whole-number only)
         public int? Rating { get; set; }
         public int? Rewatchability { get; set; }
         public DateOnly? WatchDate { get; set; }
         public bool? Watched { get; set; }
         public bool? FirstWatch { get; set; }
 
-        //Connection to Season
+        // Required parent: Episode -> Season
         public Guid SeasonId { get; set; }
-        public SeasonViewModel Season { get; set; }
+        public Season Season { get; set; } = null!;
 
-        //Connection to Collection
+        // Optional parent: Episode -> Collection
         public Guid? CollectionId { get; set; }
-        public CollectionViewModel? Collection { get; set; }
+        public Collection? Collection { get; set; }
 
-        //Connection to Actor, Director, and Writer
-        public ICollection<ActorViewModel> Actors { get; set; } = new List<ActorViewModel>();
-        public ICollection<DirectorViewModel> Directors { get; set; } = new List<DirectorViewModel>();
-        public ICollection<WriterViewModel> Writers { get; set; } = new List<WriterViewModel>();
+        // Many-to-many
+        public ICollection<Genre> Genres { get; set; } = new List<Genre>();
+        public ICollection<Actor> Actors { get; set; } = new List<Actor>();
+        public ICollection<Director> Directors { get; set; } = new List<Director>();
+        public ICollection<Writer> Writers { get; set; } = new List<Writer>();
     }
 }

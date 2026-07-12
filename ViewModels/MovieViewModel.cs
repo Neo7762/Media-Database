@@ -42,8 +42,14 @@ namespace Media_Database.ViewModels
         public bool? FirstWatch { get; set; }
 
         //Connections to Actor, Director and Writer
-        public ICollection<ActorViewModel> Actors { get; set; } = new List<ActorViewModel>();
-        public ICollection<DirectorViewModel> Directors { get; set; } = new List<DirectorViewModel>();
-        public ICollection<WriterViewModel> Writers { get; set; } = new List<WriterViewModel>();
+        public List<Guid> SelectedActorIds { get; set; } = new();
+
+        public IEnumerable<SelectListItem> Actors { get; set; } = new List<SelectListItem>();
+        public List<Guid> SelectedDirectorIds { get; set; } = new();
+
+        public IEnumerable<SelectListItem> Directors { get; set; } = new List<SelectListItem>();
+        public List<Guid> SelectedWriterIds { get; set; } = new();
+
+        public IEnumerable<SelectListItem> Writers { get; set; } = new List<SelectListItem>();
     }
 }

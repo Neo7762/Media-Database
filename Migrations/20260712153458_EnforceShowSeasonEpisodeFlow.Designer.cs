@@ -4,6 +4,7 @@ using Media_Database.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Media_Database.Migrations
 {
     [DbContext(typeof(MediaContext))]
-    partial class MediaContextModelSnapshot : ModelSnapshot
+    [Migration("20260712153458_EnforceShowSeasonEpisodeFlow")]
+    partial class EnforceShowSeasonEpisodeFlow
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,95 +25,30 @@ namespace Media_Database.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ActorEpisode", b =>
-                {
-                    b.Property<Guid>("ActorsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("EpisodesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ActorsId", "EpisodesId");
-
-                    b.HasIndex("EpisodesId");
-
-                    b.ToTable("ActorEpisode");
-                });
-
-            modelBuilder.Entity("ActorMovie", b =>
-                {
-                    b.Property<Guid>("ActorsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("MoviesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ActorsId", "MoviesId");
-
-                    b.HasIndex("MoviesId");
-
-                    b.ToTable("ActorMovie");
-                });
-
-            modelBuilder.Entity("DirectorEpisode", b =>
-                {
-                    b.Property<Guid>("DirectorsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("EpisodesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("DirectorsId", "EpisodesId");
-
-                    b.HasIndex("EpisodesId");
-
-                    b.ToTable("DirectorEpisode");
-                });
-
-            modelBuilder.Entity("DirectorMovie", b =>
-                {
-                    b.Property<Guid>("DirectorsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("MoviesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("DirectorsId", "MoviesId");
-
-                    b.HasIndex("MoviesId");
-
-                    b.ToTable("DirectorMovie");
-                });
-
-            modelBuilder.Entity("EpisodeWriter", b =>
-                {
-                    b.Property<Guid>("EpisodesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("WritersId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("EpisodesId", "WritersId");
-
-                    b.HasIndex("WritersId");
-
-                    b.ToTable("EpisodeWriter");
-                });
-
             modelBuilder.Entity("Media_Database.Models.Actor", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("EpisodeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("MovieId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EpisodeId");
+
+                    b.HasIndex("MovieId");
 
                     b.ToTable("Actors");
                 });
@@ -142,14 +80,24 @@ namespace Media_Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("EpisodeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("MovieId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EpisodeId");
+
+                    b.HasIndex("MovieId");
 
                     b.ToTable("Directors");
                 });
@@ -299,9 +247,6 @@ namespace Media_Database.Migrations
                     b.Property<DateOnly?>("ReleaseYear")
                         .HasColumnType("date");
 
-                    b.Property<int>("SeasonNumber")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("ShowId")
                         .HasColumnType("uniqueidentifier");
 
@@ -359,8 +304,14 @@ namespace Media_Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("EpisodeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("MovieId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -368,97 +319,41 @@ namespace Media_Database.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EpisodeId");
+
+                    b.HasIndex("MovieId");
+
                     b.ToTable("Writers");
                 });
 
-            modelBuilder.Entity("MovieWriter", b =>
+            modelBuilder.Entity("Media_Database.Models.Actor", b =>
                 {
-                    b.Property<Guid>("MoviesId")
-                        .HasColumnType("uniqueidentifier");
+                    b.HasOne("Media_Database.Models.Episode", "Episode")
+                        .WithMany("Actors")
+                        .HasForeignKey("EpisodeId");
 
-                    b.Property<Guid>("WritersId")
-                        .HasColumnType("uniqueidentifier");
+                    b.HasOne("Media_Database.Models.Movie", "Movie")
+                        .WithMany("Actors")
+                        .HasForeignKey("MovieId");
 
-                    b.HasKey("MoviesId", "WritersId");
+                    b.Navigation("Episode");
 
-                    b.HasIndex("WritersId");
-
-                    b.ToTable("MovieWriter");
+                    b.Navigation("Movie");
                 });
 
-            modelBuilder.Entity("ActorEpisode", b =>
+            modelBuilder.Entity("Media_Database.Models.Director", b =>
                 {
-                    b.HasOne("Media_Database.Models.Actor", null)
-                        .WithMany()
-                        .HasForeignKey("ActorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Media_Database.Models.Episode", "Episode")
+                        .WithMany("Directors")
+                        .HasForeignKey("EpisodeId");
 
-                    b.HasOne("Media_Database.Models.Episode", null)
-                        .WithMany()
-                        .HasForeignKey("EpisodesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                    b.HasOne("Media_Database.Models.Movie", "Movie")
+                        .WithMany("Directors")
+                        .HasForeignKey("MovieId");
 
-            modelBuilder.Entity("ActorMovie", b =>
-                {
-                    b.HasOne("Media_Database.Models.Actor", null)
-                        .WithMany()
-                        .HasForeignKey("ActorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Episode");
 
-                    b.HasOne("Media_Database.Models.Movie", null)
-                        .WithMany()
-                        .HasForeignKey("MoviesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DirectorEpisode", b =>
-                {
-                    b.HasOne("Media_Database.Models.Director", null)
-                        .WithMany()
-                        .HasForeignKey("DirectorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Media_Database.Models.Episode", null)
-                        .WithMany()
-                        .HasForeignKey("EpisodesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DirectorMovie", b =>
-                {
-                    b.HasOne("Media_Database.Models.Director", null)
-                        .WithMany()
-                        .HasForeignKey("DirectorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Media_Database.Models.Movie", null)
-                        .WithMany()
-                        .HasForeignKey("MoviesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("EpisodeWriter", b =>
-                {
-                    b.HasOne("Media_Database.Models.Episode", null)
-                        .WithMany()
-                        .HasForeignKey("EpisodesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Media_Database.Models.Writer", null)
-                        .WithMany()
-                        .HasForeignKey("WritersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Movie");
                 });
 
             modelBuilder.Entity("Media_Database.Models.Episode", b =>
@@ -522,19 +417,19 @@ namespace Media_Database.Migrations
                         .HasForeignKey("CollectionId");
                 });
 
-            modelBuilder.Entity("MovieWriter", b =>
+            modelBuilder.Entity("Media_Database.Models.Writer", b =>
                 {
-                    b.HasOne("Media_Database.Models.Movie", null)
-                        .WithMany()
-                        .HasForeignKey("MoviesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Media_Database.Models.Episode", "Episode")
+                        .WithMany("Writers")
+                        .HasForeignKey("EpisodeId");
 
-                    b.HasOne("Media_Database.Models.Writer", null)
-                        .WithMany()
-                        .HasForeignKey("WritersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Media_Database.Models.Movie", "Movie")
+                        .WithMany("Writers")
+                        .HasForeignKey("MovieId");
+
+                    b.Navigation("Episode");
+
+                    b.Navigation("Movie");
                 });
 
             modelBuilder.Entity("Media_Database.Models.Collection", b =>
@@ -550,12 +445,24 @@ namespace Media_Database.Migrations
 
             modelBuilder.Entity("Media_Database.Models.Episode", b =>
                 {
+                    b.Navigation("Actors");
+
+                    b.Navigation("Directors");
+
                     b.Navigation("Genres");
+
+                    b.Navigation("Writers");
                 });
 
             modelBuilder.Entity("Media_Database.Models.Movie", b =>
                 {
+                    b.Navigation("Actors");
+
+                    b.Navigation("Directors");
+
                     b.Navigation("Genres");
+
+                    b.Navigation("Writers");
                 });
 
             modelBuilder.Entity("Media_Database.Models.Season", b =>

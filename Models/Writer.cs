@@ -5,13 +5,10 @@
         public Guid Id { get; set; } = Guid.NewGuid();
 
         public string? ImagePath { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
-        //Connection to Movie and Episode
-        public Guid? MovieId { get; set; }
-        public Movie? Movie { get; set; }
-
-        public Guid? EpisodeId { get; set; }
-        public Episode? Episode { get; set; }
+        // Many-to-many
+        public ICollection<Movie> Movies { get; set; } = new List<Movie>();
+        public ICollection<Episode> Episodes { get; set; } = new List<Episode>();
     }
 }

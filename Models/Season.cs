@@ -9,6 +9,7 @@ namespace Media_Database.Models
         public string? ImagePath { get; set; }
         public string Title { get; set; } = string.Empty;
         public string? Synopsis { get; set; }
+        public int SeasonNumber { get; set; }
         public DateOnly? ReleaseYear { get; set; }
 
         // Required parent: Season -> Show

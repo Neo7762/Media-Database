@@ -18,6 +18,9 @@ namespace Media_Database.ViewModels
         [DisplayName("Synopsis")]
         public string? Synopsis { get; set; }
 
+        [DisplayName("Season Number")]
+        public int SeasonNumber { get; set; }
+
         [DisplayName("Release Year")]
         public DateOnly? ReleaseYear { get; set; }
 

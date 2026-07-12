@@ -12,7 +12,7 @@ namespace Media_Database.ViewModels
         public string? ImagePath { get; set; }
 
         [Required]
-        [DisplayName("Title")]]
+        [DisplayName("Title")]
         public string Title { get; set; }
         [DisplayName("Synopsis")]
         public string? Synopsis { get; set; }

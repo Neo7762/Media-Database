@@ -14,7 +14,7 @@ namespace Media_Database.ViewModels
         [Required]
         [DisplayName("Collection Name")]
         public string Name { get; set; }
-        [DisplayName("Collection Description")])]
+        [DisplayName("Collection Description")]
         public string? Description { get; set; }
 
         //Connection to Movie, Episode, Season, and Show

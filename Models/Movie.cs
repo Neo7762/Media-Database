@@ -1,6 +1,6 @@
 ﻿namespace Media_Database.Models
 {
-    public class Movie
+    public class MovieViewModel
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string? ImagePath { get; set; }
@@ -11,7 +11,7 @@
         public string? CountryOfOrigin { get; set; }
 
         //Connection to Genre
-        public ICollection<Genre> Genres { get; set; }
+        public ICollection<GenreViewModel> Genres { get; set; }
 
         //Rating System
         public int? Rating { get; set; }
@@ -21,8 +21,8 @@
         public bool? FirstWatch { get; set; }
 
         //Connections to Actor, Director and Writer
-        public ICollection<Actor> Actors { get; set; }
-        public ICollection<Director> Directors { get; set; }
-        public ICollection<Writer> Writers { get; set; }
+        public ICollection<ActorViewModel> Actors { get; set; }
+        public ICollection<DirectorViewModel> Directors { get; set; }
+        public ICollection<WriterViewModel> Writers { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Media_Database.Models
 {
-    public class Collection
+    public class CollectionViewModel
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
@@ -9,9 +9,9 @@
         public string? Description { get; set; }
 
         //Different media pieces that can be added to a collection
-        public ICollection<Movie> Movies { get; set; } = new List<Movie>();
-        public ICollection<Episode> Episodes { get; set; } = new List<Episode>();
-        public ICollection<Season> Seasons { get; set; } = new List<Season>();
-        public ICollection<Show> Shows { get; set; } = new List<Show>();
+        public ICollection<MovieViewModel> Movies { get; set; } = new List<MovieViewModel>();
+        public ICollection<EpisodeViewModel> Episodes { get; set; } = new List<EpisodeViewModel>();
+        public ICollection<SeasonViewModel> Seasons { get; set; } = new List<SeasonViewModel>();
+        public ICollection<ShowViewModel> Shows { get; set; } = new List<ShowViewModel>();
     }
 }

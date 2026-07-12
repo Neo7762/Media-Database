@@ -2,7 +2,7 @@
 
 namespace Media_Database.Models
 {
-    public class Episode
+    public class EpisodeViewModel
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
@@ -14,7 +14,7 @@ namespace Media_Database.Models
         public int LengthMinutes { get; set; }
 
         //Connection to Genre
-        public ICollection<Genre> Genres { get; set; } = new List<Genre>();
+        public ICollection<GenreViewModel> Genres { get; set; } = new List<GenreViewModel>();
 
         //Rating System
         public int? Rating { get; set; }
@@ -25,15 +25,15 @@ namespace Media_Database.Models
 
         //Connection to Season
         public Guid SeasonId { get; set; }
-        public Season Season { get; set; }
+        public SeasonViewModel Season { get; set; }
 
         //Connection to Collection
         public Guid? CollectionId { get; set; }
-        public Collection? Collection { get; set; }
+        public CollectionViewModel? Collection { get; set; }
 
         //Connection to Actor, Director, and Writer
-        public ICollection<Actor> Actors { get; set; } = new List<Actor>();
-        public ICollection<Director> Directors { get; set; } = new List<Director>();
-        public ICollection<Writer> Writers { get; set; } = new List<Writer>();
+        public ICollection<ActorViewModel> Actors { get; set; } = new List<ActorViewModel>();
+        public ICollection<DirectorViewModel> Directors { get; set; } = new List<DirectorViewModel>();
+        public ICollection<WriterViewModel> Writers { get; set; } = new List<WriterViewModel>();
     }
 }

@@ -11,7 +11,7 @@ namespace Media_Database.Models
         OnHold,
         Dropped
     }
-    public class Show
+    public class ShowViewModel
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
@@ -41,7 +41,7 @@ namespace Media_Database.Models
 
         //Add all genres from all Season in the Show
         [NotMapped]
-        public ICollection<Genre> Genres
+        public ICollection<GenreViewModel> Genres
         {
             get
             {
@@ -52,7 +52,7 @@ namespace Media_Database.Models
                 }
                 else
                 {
-                    return new List<Genre>();
+                    return new List<GenreViewModel>();
                 }
             }
         }
@@ -112,9 +112,9 @@ namespace Media_Database.Models
         }
 
         //Connection to Seasons and Episodes
-        public ICollection<Season> Seasons { get; set; }
+        public ICollection<SeasonViewModel> Seasons { get; set; }
         [NotMapped]
-        public ICollection<Episode> Episodes
+        public ICollection<EpisodeViewModel> Episodes
         {
             get
             {
@@ -124,14 +124,14 @@ namespace Media_Database.Models
                 }
                 else
                 {
-                    return new List<Episode>();
+                    return new List<EpisodeViewModel>();
                 }
             }
         }
 
         //Connection to Actor, Director and Writer
-        public ICollection<Actor> Actors { get; set; }
-        public ICollection<Director> Directors { get; set; }
-        public ICollection<Writer> Writers { get; set; }
+        public ICollection<ActorViewModel> Actors { get; set; }
+        public ICollection<DirectorViewModel> Directors { get; set; }
+        public ICollection<WriterViewModel> Writers { get; set; }
     }
 }

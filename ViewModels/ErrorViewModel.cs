@@ -1,4 +1,4 @@
-namespace Media_Database.Models
+namespace Media_Database.ViewModels
 {
     public class ErrorViewModel
     {

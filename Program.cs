@@ -1,3 +1,6 @@
+using Media_Database.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace Media_Database
 {
     public class Program
@@ -8,6 +11,10 @@ namespace Media_Database
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            //Add the database context to the services container and configure it to use SQL Server with the connection string from appsettings.json
+            builder.Services.AddDbContext<MediaContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 

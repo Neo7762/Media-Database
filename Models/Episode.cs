@@ -32,8 +32,8 @@ namespace Media_Database.Models
         public Collection? Collection { get; set; }
 
         //Connection to Actor, Director, and Writer
-        public ICollection<Actor>? Actors { get; set; } = new List<Actor>();
-        public ICollection<Director>? Directors { get; set; } = new List<Director>();
-        public ICollection<Writer>? Writers { get; set; } = new List<Writer>();
+        public ICollection<Actor> Actors { get; set; } = new List<Actor>();
+        public ICollection<Director> Directors { get; set; } = new List<Director>();
+        public ICollection<Writer> Writers { get; set; } = new List<Writer>();
     }
 }

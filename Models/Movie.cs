@@ -21,8 +21,8 @@
         public bool? FirstWatch { get; set; }
 
         //Connections to Actor, Director and Writer
-        public ICollection<Actor>? Actors { get; set; }
-        public ICollection<Director>? Directors { get; set; }
-        public ICollection<Writer>? Writers { get; set; }
+        public ICollection<Actor> Actors { get; set; }
+        public ICollection<Director> Directors { get; set; }
+        public ICollection<Writer> Writers { get; set; }
     }
 }

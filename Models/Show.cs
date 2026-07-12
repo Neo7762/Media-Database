@@ -1,4 +1,7 @@
-﻿namespace Media_Database.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+
+namespace Media_Database.Models
 {
     public enum WatchStatus
     {
@@ -13,19 +16,20 @@
         public Guid Id { get; set; } = Guid.NewGuid();
 
         public string? ImagePath { get; set; }
-        public string Name { get; set; }
+        public string Title { get; set; }
         public string? Synopsis { get; set; }
         public DateOnly? ReleaseYear { get; set; }
         public WatchStatus WatchStatus { get; set; } = WatchStatus.NotStarted;
 
         //Count length of series from length of each Season in the Show
+        [NotMapped]
         public int LengthMinutes
         {
             get
             {
                 if (Seasons != null && Seasons.Count > 0)
                 {
-                    int totalMinutes = Episodes.Sum(e => e.LengthMinutes);
+                    int totalMinutes = Seasons.SelectMany(e => e.Episodes).Sum(e => e.LengthMinutes);
                     return (totalMinutes);
                 }
                 else
@@ -36,6 +40,7 @@
         }
 
         //Add all genres from all Season in the Show
+        [NotMapped]
         public ICollection<Genre>? Genres
         {
             get
@@ -53,6 +58,7 @@
         }
 
         //Calculate start and end dates of the watch time of the Show based on the date watched of the first and last Episode in the Show
+        [NotMapped]
         public DateOnly StartWatch
         {
             get
@@ -61,6 +67,7 @@
                 else { return default; }
             }
         }
+        [NotMapped]
         public DateOnly EndWatch
         {
             get
@@ -71,6 +78,7 @@
         }
 
         //Calculate rating and rewatchability of the season based on the average of all episodes
+        [NotMapped]
         public int? Rating
         {
             get
@@ -85,6 +93,7 @@
                 }
             }
         }
+        [NotMapped]
         public int? Rewatchability
         {
             get
@@ -101,8 +110,9 @@
         }
 
         //Connection to Seasons and Episodes
-        public ICollection<Season>? Seasons { get; set; }
-        public ICollection<Episode>? Episodes
+        public ICollection<Season> Seasons { get; set; }
+        [NotMapped]
+        public ICollection<Episode> Episodes
         {
             get
             {
@@ -118,8 +128,8 @@
         }
 
         //Connection to Actor, Director and Writer
-        public ICollection<Actor>? Actors { get; set; }
-        public ICollection<Director>? Directors { get; set; }
-        public ICollection<Writer>? Writers { get; set; }
+        public ICollection<Actor> Actors { get; set; }
+        public ICollection<Director> Directors { get; set; }
+        public ICollection<Writer> Writers { get; set; }
     }
 }

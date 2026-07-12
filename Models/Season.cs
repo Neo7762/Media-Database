@@ -1,15 +1,18 @@
-﻿namespace Media_Database.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Media_Database.Models
 {
     public class Season
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
         public string? ImagePath { get; set; }
-        public string Name { get; set; }
+        public string Title { get; set; }
         public string? Synopsis { get; set; }
         public DateOnly? ReleaseYear { get; set; }
 
         //Count length of series from length of each Episode in the season
+        [NotMapped]
         public int LengthMinutes
         {
             get
@@ -27,6 +30,7 @@
         }
 
         //Add all genres from all Episodes in the Season
+        [NotMapped]
         public ICollection<Genre>? Genres
         {
             get
@@ -44,6 +48,7 @@
         }
 
         //Calculate start and end dates of the watch time of the Season based on the date watched of the first and last Episode
+        [NotMapped]
         public DateOnly StartWatch
         {
             get
@@ -52,6 +57,7 @@
                 else { return default; }
             }
         }
+        [NotMapped]
         public DateOnly EndWatch
         {
             get
@@ -62,6 +68,7 @@
         }
 
         //Calculate rating and rewatchability of the Season based on the average of all Episodes
+        [NotMapped]
         public int? Rating
         {
             get
@@ -76,6 +83,7 @@
                 }
             }
         }
+        [NotMapped]
         public int? Rewatchability
         {
             get
@@ -92,11 +100,11 @@
         }
 
         //Connection to Episode
-        public ICollection<Episode>? Episodes { get; set; }
+        public ICollection<Episode> Episodes { get; set; }
 
         //Connection to Actor, Director and Writer
-        public ICollection<Actor>? Actors { get; set; }
-        public ICollection<Director>? Directors { get; set; }
-        public ICollection<Writer>? Writers { get; set; }
+        public ICollection<Actor> Actors { get; set; }
+        public ICollection<Director> Directors { get; set; }
+        public ICollection<Writer> Writers { get; set; }
     }
 }
